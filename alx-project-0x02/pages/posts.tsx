@@ -8,48 +8,38 @@ interface Post {
   title: string;
   body: string;
 }
+interface PostsPageProps {
+  posts: Post[];
+}
 
-const PostsPage = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const res = await fetch('https://jsonplaceholder.typicode.com/posts');
-        const data = await res.json();
-        setPosts(data.slice(0, 10)); // Fetch first 10 posts for simplicity
-      } catch (error) {
-        console.error('Failed to fetch posts:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPosts();
-  }, []);
-
+const PostsPage: React.FC<PostsPageProps> = ({ posts }) => {
   return (
     <>
       <Header />
       <main className="p-8">
         <h2 className="text-2xl font-semibold mb-4">Posts</h2>
-
-        {loading ? (
-          <p>Loading posts...</p>
-        ) : (
-          posts.map((post) => (
-            <PostCard
-              key={post.id}
-              title={post.title}
-              content={post.body}
-              userId={post.userId}
-            />
-          ))
-        )}
+        {posts.map((post) => (
+          <PostCard
+            key={post.id}
+            title={post.title}
+            content={post.body}
+            userId={post.userId}
+          />
+        ))}
       </main>
     </>
   );
+};
+
+export const getStaticProps = async () => {
+  const res = await fetch('https://jsonplaceholder.typicode.com/posts');
+  const data: Post[] = await res.json();
+
+  return {
+    props: {
+      posts: data.slice(0, 10), // Limit to first 10 posts
+    },
+  };
 };
 
 export default PostsPage;
