@@ -1,27 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '../components/layout/Header';
-import Card from '@/components/common/Card';
+import Card from '../components/common/Card';
+import PostModal from '../components/common/PostModal';
+
 const Home = () => {
+  const [cards, setCards] = useState([
+    { title: 'Getting Started', content: 'Learn how to get started with our application step by step.' },
+    { title: 'Features', content: 'Discover the key features that make our app powerful and easy to use.' },
+    { title: 'Community', content: 'Join our growing community and connect with other users.' },
+  ]);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleAddCard = (data: { title: string; content: string }) => {
+    setCards([...cards, data]);
+  };
+
   return (
     <>
       <Header />
       <main style={{ padding: '2rem' }}>
         <h2>Home Page</h2>
-        <p>Welcome to the home page of our awesome app.</p>
-        
-        <Card
-          title="Getting Started"
-          content="Learn how to get started with our application step by step."
-        />
+        <button onClick={() => setIsModalOpen(true)} style={{ marginBottom: '1rem' }}>
+          Add New Card
+        </button>
 
-        <Card
-          title="Features"
-          content="Discover the key features that make our app powerful and easy to use."
-        />
+        {cards.map((card, index) => (
+          <Card key={index} title={card.title} content={card.content} />
+        ))}
 
-        <Card
-          title="Community"
-          content="Join our growing community and connect with other users."
+        <PostModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onSubmit={handleAddCard}
         />
       </main>
     </>
