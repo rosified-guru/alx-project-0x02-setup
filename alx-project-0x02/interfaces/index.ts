@@ -12,3 +12,8 @@ export interface PostModalProps {
   shape?: 'rounded-sm' | 'rounded-md' | 'rounded-full';
   children: React.ReactNode;
  }
+ export interface PostCardProps {
+    title: string;
+    content: string;
+    userId: number;
+ }
