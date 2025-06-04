@@ -17,3 +17,14 @@ export interface PostModalProps {
     content: string;
     userId: number;
  }
+ export interface UserProps {
+    id: number;
+    name: string;
+    email: string;
+    phone: number;
+    address: {
+      street: string;
+       city: string;
+       zipcode: string;
+    }
+ }
